@@ -57,11 +57,11 @@ sortperm(w2, rev=true)[1:5] |> x -> titles[x]
 
 function print_top_components(w, thesen)
     println("Top 5 Komponenten:")
-    idxs = sortperm(w, rev=true)[1:5]
+    idxs = sortperm(abs.(w), rev=true)[1:5]
     for (n,i) in enumerate(idxs)
         println(n, " ", round(w[i], digits=4), "  -  ", thesen[i])
     end
-    display(cor(X[:, idxs]))
+    # display(cor(X[:, idxs]))
 end
 
 print_top_components(w1, thesen)
