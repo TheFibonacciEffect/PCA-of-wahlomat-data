@@ -26,14 +26,14 @@ questions = groupby(data, "These: Titel")
 
 titles = []
 thesen = []
-X = []
+positions = []
 for q in questions
     push!(titles, q[1, "These: Titel"])
     push!(thesen, q[1, "These: These"])
     x = q[:,:Position]
-    push!(X, x .- mean(x))
+    push!(positions, x .- mean(x))
 end
-X = hcat(X...) |> Matrix{Float64}
+X = hcat(positions...) |> Matrix{Float64}
 
 vals, vects = eigen(X' * X)
 
@@ -58,10 +58,13 @@ sortperm(w2, rev=true)[1:5] |> x -> titles[x]
 function print_top_components(w, thesen)
     println("Top 5 Komponenten:")
     idxs = sortperm(w, rev=true)[1:5]
-    for i in idxs
-        println(round(w[i], digits=4), "  -  ", thesen[i])
+    for (n,i) in enumerate(idxs)
+        println(n, " ", round(w[i], digits=4), "  -  ", thesen[i])
     end
+    display(cor(X[:, idxs]))
 end
 
 print_top_components(w1, thesen)
 print_top_components(w2, thesen)
+
+
